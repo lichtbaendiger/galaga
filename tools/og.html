@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<!-- Open-Graph-Cover: erzeugt img/og-cover.png (1200x630).
+     Erzeugung: chrome --headless=new --screenshot --window-size=1200,630 tools/og.html -->
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>OG Cover</title>
+<style>html,body{margin:0;padding:0;background:#000;overflow:hidden}</style>
+</head>
+<body>
+<canvas id="c" width="1200" height="630"></canvas>
+<script src="../js/pixel.js"></script>
+<script>
+(function () {
+  "use strict";
+  var g = document.getElementById("c").getContext("2d");
+  var W = 1200, H = 630;
+
+  // deterministlicher Zufall, damit das Bild reproduzierbar ist
+  var seed = 1337;
+  function rnd() { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }
+
+  // Hintergrund + Sternenfeld
+  g.fillStyle = "#02020a";
+  g.fillRect(0, 0, W, H);
+  for (var i = 0; i < 150; i++) {
+    var s = rnd() < 0.8 ? 2 : 3;
+    g.fillStyle = "rgba(255,255,255," + (0.2 + rnd() * 0.8).toFixed(2) + ")";
+    g.fillRect((rnd() * W) | 0, (rnd() * H) | 0, s, s);
+  }
+  // Glow-Fläche hinter der Formation
+  var grad = g.createRadialGradient(600, 340, 40, 600, 340, 420);
+  grad.addColorStop(0, "rgba(60,70,180,0.20)");
+  grad.addColorStop(1, "rgba(0,0,0,0)");
+  g.fillStyle = grad;
+  g.fillRect(0, 0, W, H);
+
+  function spr(name, pal, cx, cy, sc) {
+    PX.draw(g, PX.sprite(name, pal), cx, cy, { scale: sc });
+  }
+
+  /* ---------- Titel ---------- */
+  PX.text(g, "GALAGA", 600 + 10, 60 + 10, "#ff2b2b", { align: "center", scale: 11, tracking: 5 });
+  PX.text(g, "GALAGA", 600, 60, "#ffd21f", { align: "center", scale: 11, tracking: 5 });
+  PX.text(g, "WEB ARCADE EDITION", 600, 178, "#3fd8ff", { align: "center", scale: 3 });
+
+  /* ---------- Formation ---------- */
+  // Reihe 1: 3 Bosse
+  spr("boss1", "boss", 490, 268, 4);
+  spr("boss2", "boss", 600, 268, 4);
+  spr("boss1", "boss", 710, 268, 4);
+  // Reihe 2: Falter + Chamäleon in der Mitte
+  spr("butterfly1", "butterfly", 390, 344, 4);
+  spr("butterfly2", "butterfly", 495, 344, 4);
+  spr("cham1", "chamB", 600, 344, 4);
+  spr("butterfly2", "butterfly", 705, 344, 4);
+  spr("butterfly1", "butterfly", 810, 344, 4);
+  // Reihe 3: Bienen, eine explodiert
+  spr("bee1", "bee", 330, 420, 4);
+  spr("bee2", "bee", 435, 420, 4);
+  spr("bee1", "bee", 540, 420, 4);
+  spr("boom2", null, 645, 420, 4);          // Explosion
+  spr("bee2", "bee", 750, 420, 4);
+  spr("bee1", "bee", 855, 420, 4);
+
+  /* ---------- Spieler unten links, im Traktorstrahl ---------- */
+  // tauchender Boss mit Strahl
+  spr("boss2", "boss", 185, 435, 4);
+  var top = 462, bot = 630;
+  g.save();
+  g.beginPath();
+  g.moveTo(185 - 14, top); g.lineTo(185 + 14, top);
+  g.lineTo(185 + 52, bot); g.lineTo(185 - 52, bot);
+  g.closePath();
+  g.fillStyle = "rgba(63,216,255,0.15)";
+  g.fill();
+  for (var y = top; y < bot; y += 10) {
+    var hw = 14 + (y - top) * 0.31;
+    g.fillStyle = ["#3fd8ff", "#c050ff", "#2b57ff", "#ffffff"][((y / 10) % 4)];
+    g.globalAlpha = 0.55;
+    g.fillRect(Math.round(185 - hw), y, Math.round(hw * 2), 2);
+  }
+  g.restore();
+  g.globalAlpha = 1;
+
+  // Spieler wird hochgewirbelt (gekippt)
+  var f = PX.sprite("fighter", "captured");
+  g.save();
+  g.translate(185, 585);
+  g.rotate(0.5);
+  g.drawImage(f.canvas, -32, -32, 64, 64);
+  g.restore();
+
+  // Schüsse des Spielers nach oben
+  g.fillStyle = "#ffffff";
+  g.fillRect(160, 500, 5, 40);
+  g.fillStyle = "#ff2b2b"; g.fillRect(160, 500, 5, 6);
+  g.fillStyle = "#ffffff";
+  g.fillRect(215, 470, 5, 40);
+  g.fillStyle = "#ff2b2b"; g.fillRect(215, 470, 5, 6);
+
+  /* ---------- Flagge rechts ---------- */
+  spr("flag", "flag", 1040, 520, 4);
+  PX.text(g, "+800", 1040, 590, "#ffd21f", { align: "center", scale: 2 });
+
+  /* ---------- Fußzeile ---------- */
+  PX.text(g, "KOSTENLOS IM BROWSER SPIELEN", 600, 600 - 4, "#ffffff", { align: "center", scale: 2 });
+})();
+</script>
+</body>
+</html>

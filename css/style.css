@@ -1,0 +1,56 @@
+/* Galaga Web Arcade */
+:root{
+  --bezel:#101014;
+  --glow:rgba(255,210,60,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:#050508 radial-gradient(circle at 50% 30%, #0d0d16 0%, #050508 70%);
+  color:#cfd3dd;
+  font-family:"Segoe UI",system-ui,sans-serif;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:10px;overflow:hidden;user-select:none;-webkit-user-select:none;
+  touch-action:none;
+}
+#frame{
+  position:relative;
+  padding:10px;
+  background:linear-gradient(#191922,#0b0b10);
+  border-radius:14px;
+  box-shadow:0 0 60px var(--glow), 0 12px 40px rgba(0,0,0,.8), inset 0 0 0 1px #26263a;
+}
+#game{
+  display:block;
+  background:#000;
+  border-radius:6px;
+  image-rendering:pixelated;
+  image-rendering:crisp-edges;
+}
+/* dezente CRT-Scanlines */
+#scanlines{
+  position:absolute;inset:10px;border-radius:6px;pointer-events:none;
+  background:repeating-linear-gradient(to bottom,
+    rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px,
+    rgba(0,0,0,.22) 3px, rgba(0,0,0,.22) 4px);
+  mix-blend-mode:multiply;
+  opacity:.55;
+}
+#touch{
+  position:absolute;left:0;right:0;bottom:-64px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+#touch.hide{display:none}
+#touch button{
+  background:#181824;color:#ffd23f;border:1px solid #34345a;border-radius:10px;
+  font-size:18px;padding:14px 18px;min-width:56px;
+}
+#touch button:active{background:#2b2b44}
+#touchMid{display:flex;flex-direction:column;gap:6px}
+#touchMid button{font-size:11px;padding:8px 12px;min-width:64px;color:#9fd2ff}
+#btnFire{font-size:26px;min-width:72px;border-radius:50%;}
+#hint{
+  display:flex;gap:18px;font-size:12px;color:#7b8094;letter-spacing:.04em;
+}
+#hint b{color:#cfd3dd}
+@media (max-height:640px){ #hint{display:none} }

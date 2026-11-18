@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>GALAGA &ndash; Web Arcade</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="frame">
+    <canvas id="game" width="224" height="288"></canvas>
+    <div id="scanlines"></div>
+
+    <div id="touch" class="hide">
+      <button id="btnLeft"  aria-label="Links">&#9664;</button>
+      <div id="touchMid">
+        <button id="btnStart" aria-label="Start">START</button>
+        <button id="btnPause" aria-label="Pause">PAUSE</button>
+      </div>
+      <button id="btnRight" aria-label="Rechts">&#9654;</button>
+      <button id="btnFire"  aria-label="Feuern">&#9679;</button>
+    </div>
+  </div>
+
+  <div id="hint">
+    <span><b>&#8592; &#8594;</b> Bewegen</span>
+    <span><b>Leertaste</b> Feuer</span>
+    <span><b>Enter</b> Start</span>
+    <span><b>P</b> Pause</span>
+    <span><b>M</b> Ton</span>
+  </div>
+
+  <script src="js/pixel.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
